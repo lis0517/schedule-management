@@ -59,4 +59,14 @@ public class ScheduleService {
         scheduleRepository.save(schedule);
         return new ResponseDto(schedule);
     }
+
+    @Transactional
+    public void deleteSchedule(Long id, String password) {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지않습니다. id = " + id));
+        if(!schedule.getPassword().equals(password)){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        scheduleRepository.delete(schedule);
+    }
 }
