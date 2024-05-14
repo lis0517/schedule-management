@@ -32,4 +32,12 @@ public class ScheduleService {
         scheduleRepository.save(schedule);
         return new ResponseDto(schedule);
     }
+
+
+    @Transactional
+    public ResponseDto getSchedule(Long id) {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지않습니다. id = " + id));
+        return new ResponseDto(schedule);
+    }
 }
