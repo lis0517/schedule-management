@@ -34,7 +34,6 @@ public class ScheduleService {
         return new ResponseDto(schedule);
     }
 
-
     @Transactional
     public ResponseDto getSchedule(Long id) {
         Schedule schedule = scheduleRepository.findById(id)
@@ -45,5 +44,19 @@ public class ScheduleService {
     @Transactional
     public List<ResponseDto> getAllSchedules() {
         return scheduleRepository.findAllByOrderByCreatedAtDesc().stream().map(ResponseDto::new).toList();
+    }
+
+    @Transactional
+    public ResponseDto updateSchedule(Long id, RequestDto requestDto) {
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지않습니다. id = " + id));
+        if(!schedule.getPassword().equals(requestDto.getPassword())){
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        schedule.setTitle(requestDto.getTitle());
+        schedule.setContent(requestDto.getContent());
+        schedule.setAuthor(requestDto.getAuthor());
+        scheduleRepository.save(schedule);
+        return new ResponseDto(schedule);
     }
 }

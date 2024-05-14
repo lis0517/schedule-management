@@ -15,7 +15,6 @@ public class ResponseDto {
     private String author;
     private LocalDateTime createdAt;
 
-
     public ResponseDto(Schedule schedule) {
         id = schedule.getId();
         title = schedule.getTitle();

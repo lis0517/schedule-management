@@ -35,4 +35,9 @@ public class ScheduleController {
         return scheduleService.getAllSchedules();
     }
 
+    @PutMapping("/{id}")
+    public ResponseDto updateSchedule(@PathVariable Long id, @RequestBody RequestDto requestDto){
+        return scheduleService.updateSchedule(id, requestDto);
+    }
+
 }
