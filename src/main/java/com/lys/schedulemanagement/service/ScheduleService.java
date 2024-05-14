@@ -4,6 +4,8 @@ package com.lys.schedulemanagement.service;
 import com.lys.schedulemanagement.dto.RequestDto;
 import com.lys.schedulemanagement.dto.ResponseDto;
 import com.lys.schedulemanagement.entity.Schedule;
+import com.lys.schedulemanagement.exception.PasswordMismatchException;
+import com.lys.schedulemanagement.exception.ScheduleNotFoundException;
 import com.lys.schedulemanagement.repository.ScheduleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class ScheduleService {
     @Transactional
     public ResponseDto getSchedule(Long id) {
         Schedule schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지않습니다. id = " + id));
+                .orElseThrow(() -> new ScheduleNotFoundException("해당 일정이 존재하지않습니다. id = " + id));
         return new ResponseDto(schedule);
     }
 
@@ -49,9 +51,9 @@ public class ScheduleService {
     @Transactional
     public ResponseDto updateSchedule(Long id, RequestDto requestDto) {
         Schedule schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지않습니다. id = " + id));
+                .orElseThrow(() -> new ScheduleNotFoundException("해당 일정이 존재하지않습니다. id = " + id));
         if(!schedule.getPassword().equals(requestDto.getPassword())){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
         }
         schedule.setTitle(requestDto.getTitle());
         schedule.setContent(requestDto.getContent());
@@ -63,9 +65,9 @@ public class ScheduleService {
     @Transactional
     public void deleteSchedule(Long id, String password) {
         Schedule schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지않습니다. id = " + id));
+                .orElseThrow(() -> new ScheduleNotFoundException("해당 일정이 존재하지않습니다. id = " + id));
         if(!schedule.getPassword().equals(password)){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
         }
         scheduleRepository.delete(schedule);
     }
