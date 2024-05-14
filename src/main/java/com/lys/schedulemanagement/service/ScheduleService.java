@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ScheduleService {
@@ -39,5 +40,10 @@ public class ScheduleService {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일정이 존재하지않습니다. id = " + id));
         return new ResponseDto(schedule);
+    }
+
+    @Transactional
+    public List<ResponseDto> getAllSchedules() {
+        return scheduleRepository.findAllByOrderByCreatedAtDesc().stream().map(ResponseDto::new).toList();
     }
 }

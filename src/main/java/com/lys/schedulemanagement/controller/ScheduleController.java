@@ -7,8 +7,10 @@ import com.lys.schedulemanagement.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/schedule")
+@RequestMapping("/api/schedule")
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
@@ -26,6 +28,11 @@ public class ScheduleController {
     @GetMapping("/{id}")
     public ResponseDto getSchedule(@PathVariable Long id){
         return scheduleService.getSchedule(id);
+    }
+
+    @GetMapping("/list")
+    public List<ResponseDto> getAllSchedules(){
+        return scheduleService.getAllSchedules();
     }
 
 }
