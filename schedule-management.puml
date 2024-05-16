@@ -5,6 +5,17 @@ entity "Schedule" {
     content : String
     author : String
     password : String
-    created_at : LocalDateTime
+    created_at : Timestamp
+    updated_at : Timestamp
+    deleted_at : Timestamp
 }
+
+entity "File" {
+    id : Long <<PK>>
+    schedule : "Schedule" <<FK>>
+    file_name : String
+    file_path : String
+}
+
+Schedule ||--o{ File
 @enduml
