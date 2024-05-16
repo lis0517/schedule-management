@@ -1,0 +1,10 @@
+@startuml
+entity "Schedule" {
+    id : Long <<PK>>
+    title : String
+    content : String
+    author : String
+    password : String
+    created_at : LocalDateTime
+}
+@enduml
