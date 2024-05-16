@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface FileRepository extends JpaRepository<File,Long> {
     Optional<File> findByIdAndScheduleId(Long fileId, Long scheduleId);
+
+    void deleteByScheduleId(Long scheduleId);
 }

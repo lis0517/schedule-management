@@ -7,8 +7,10 @@ import com.lys.schedulemanagement.dto.ResponseDto;
 import com.lys.schedulemanagement.entity.Schedule;
 import com.lys.schedulemanagement.exception.PasswordMismatchException;
 import com.lys.schedulemanagement.exception.ScheduleNotFoundException;
+import com.lys.schedulemanagement.repository.FileRepository;
 import com.lys.schedulemanagement.repository.ScheduleRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
-    @Autowired
-    public ScheduleService(ScheduleRepository scheduleRepository){
-        this.scheduleRepository = scheduleRepository;
-    }
+    private final FileRepository fileRepository;
 
     @Transactional
     public ResponseDto createSchedule(RequestDto requestDto) {
@@ -70,6 +70,10 @@ public class ScheduleService {
         if(!schedule.getPassword().equals(passwordDto.getPassword())){
             throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
         }
+
+        // 일정과 연관된 파일 삭제
+        fileRepository.deleteByScheduleId(id);
+
         scheduleRepository.delete(schedule);
     }
 }
