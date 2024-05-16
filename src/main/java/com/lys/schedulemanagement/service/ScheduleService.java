@@ -1,6 +1,7 @@
 package com.lys.schedulemanagement.service;
 
 
+import com.lys.schedulemanagement.dto.PasswordDto;
 import com.lys.schedulemanagement.dto.RequestDto;
 import com.lys.schedulemanagement.dto.ResponseDto;
 import com.lys.schedulemanagement.entity.Schedule;
@@ -63,10 +64,10 @@ public class ScheduleService {
     }
 
     @Transactional
-    public void deleteSchedule(Long id, String password) {
+    public void deleteSchedule(Long id, PasswordDto passwordDto) {
         Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(() -> new ScheduleNotFoundException("해당 일정이 존재하지않습니다. id = " + id));
-        if(!schedule.getPassword().equals(password)){
+        if(!schedule.getPassword().equals(passwordDto.getPassword())){
             throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
         }
         scheduleRepository.delete(schedule);

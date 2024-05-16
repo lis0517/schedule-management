@@ -1,6 +1,7 @@
 package com.lys.schedulemanagement.controller;
 
 
+import com.lys.schedulemanagement.dto.PasswordDto;
 import com.lys.schedulemanagement.dto.RequestDto;
 import com.lys.schedulemanagement.dto.ResponseDto;
 import com.lys.schedulemanagement.service.ScheduleService;
@@ -81,8 +82,8 @@ public class ScheduleController {
             @ApiResponse(responseCode = "401", description = "비밀번호가 일치하지않습니다."),
             @ApiResponse(responseCode = "404", description = "일정을 찾을 수 없습니다.")
     })
-    public void deleteSchedule(@PathVariable Long id, @RequestParam String password){
-        scheduleService.deleteSchedule(id, password);
+    public void deleteSchedule(@PathVariable Long id, @RequestBody PasswordDto passwordDto){
+        scheduleService.deleteSchedule(id, passwordDto);
     }
 
 
