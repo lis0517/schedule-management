@@ -4,11 +4,11 @@ import com.lys.schedulemanagement.dto.FileDownloadRequestDto;
 import com.lys.schedulemanagement.dto.FileUploadRequestDto;
 import com.lys.schedulemanagement.entity.File;
 import com.lys.schedulemanagement.entity.Schedule;
+import com.lys.schedulemanagement.exception.DownloadFileNotFoundException;
 import com.lys.schedulemanagement.exception.FileTypeMismatchException;
 import com.lys.schedulemanagement.exception.ScheduleNotFoundException;
 import com.lys.schedulemanagement.repository.FileRepository;
 import com.lys.schedulemanagement.repository.ScheduleRepository;
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -16,7 +16,10 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,7 +74,7 @@ public class FileService {
 
         // 파일 정보 조회
         File file = fileRepository.findByIdAndScheduleId(fileId, scheduleId)
-                .orElseThrow(()-> new FileNotFoundException("파일을 찾을 수 없습니다. fileId: " + fileId + ", scheduleId: " + scheduleId)) ;
+                .orElseThrow(()-> new DownloadFileNotFoundException("파일을 찾을 수 없습니다. fileId: " + fileId + ", scheduleId: " + scheduleId)) ;
 
         // 파일 다운로드
         String filePath = file.getFilePath();
@@ -80,7 +83,7 @@ public class FileService {
         if (resource.exists()){
             return resource;
         }else{
-            throw new FileNotFoundException("파일을 찾을 수 없습니다. filePath: " + filePath);
+            throw new DownloadFileNotFoundException("파일을 찾을 수 없습니다. filePath: " + filePath);
         }
     }
 
