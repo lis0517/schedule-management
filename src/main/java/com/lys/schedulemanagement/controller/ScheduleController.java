@@ -8,10 +8,19 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @Tag(name = "User", description = "일정 관리 관련 API입니다.")
@@ -58,6 +67,7 @@ public class ScheduleController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "일정 업데이트를 성공했습니다."),
             @ApiResponse(responseCode = "400", description = "유효하지않은 요청 매개변수입니다."),
+            @ApiResponse(responseCode = "401", description = "비밀번호가 일치하지않습니다."),
             @ApiResponse(responseCode = "404", description = "일정을 찾을 수 없습니다.")
     })
     public ResponseDto updateSchedule(@PathVariable Long id, @Valid @RequestBody RequestDto requestDto){
@@ -68,10 +78,41 @@ public class ScheduleController {
     @Operation(summary = "선택한 일정 삭제", description = "선택한 일정을 삭제할 수 있습니다. 삭제 요청할 때 비밀번호를 함께 전달합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "일정 삭제를 성공했습니다."),
+            @ApiResponse(responseCode = "401", description = "비밀번호가 일치하지않습니다."),
             @ApiResponse(responseCode = "404", description = "일정을 찾을 수 없습니다.")
     })
     public void deleteSchedule(@PathVariable Long id, @RequestParam String password){
         scheduleService.deleteSchedule(id, password);
     }
+
+
+    @PostMapping("/upload")
+    @Operation(summary = "파일 업로드", description = "파일을 업로드합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "파일을 성공적으로 업로드했습니다."),
+            @ApiResponse(responseCode = "400", description = "파일 업로드에 실패했습니다.")
+    })
+    public ResponseEntity<String> uploadFile(@RequestParam("file")MultipartFile file){
+        try{
+            // 파일 형식 검사
+            String contentType = file.getContentType();
+            assert contentType != null;
+            if (!contentType.startsWith("image/")){
+                return ResponseEntity.badRequest().body("이미지 파일만 업로드 가능합니다.");
+            }
+
+            String fileName = file.getOriginalFilename();
+            Path filePath = Paths.get("uploads", fileName);
+            Files.createDirectories(filePath.getParent());
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            return ResponseEntity.ok("파일이 성공적으로 업로드되었습니다.");
+        }
+        catch (IOException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 중 오류가 발생했습니다.");
+        }
+    }
+
+
 
 }

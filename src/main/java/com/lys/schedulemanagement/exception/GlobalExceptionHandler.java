@@ -24,6 +24,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
+    @ExceptionHandler(FileTypeMismatchException.class)
+    public ResponseEntity<String> handleFileTypeMismatchException(FileTypeMismatchException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
     // 유효성 검사 실패 시 예외 처리
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodsArgumentNotValidException(MethodArgumentNotValidException ex){
