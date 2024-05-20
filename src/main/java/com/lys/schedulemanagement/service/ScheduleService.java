@@ -11,7 +11,6 @@ import com.lys.schedulemanagement.repository.FileRepository;
 import com.lys.schedulemanagement.repository.ScheduleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -51,29 +50,32 @@ public class ScheduleService {
 
     @Transactional
     public ResponseDto updateSchedule(Long id, RequestDto requestDto) {
-        Schedule schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new ScheduleNotFoundException("해당 일정이 존재하지않습니다. id = " + id));
-        if(!schedule.getPassword().equals(requestDto.getPassword())){
-            throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
-        }
+        Schedule schedule = checkPWAndGetSchedule(id, requestDto.getPassword());
+
         schedule.setTitle(requestDto.getTitle());
         schedule.setContent(requestDto.getContent());
         schedule.setAuthor(requestDto.getAuthor());
+
         scheduleRepository.save(schedule);
         return new ResponseDto(schedule);
     }
 
     @Transactional
     public void deleteSchedule(Long id, PasswordDto passwordDto) {
-        Schedule schedule = scheduleRepository.findById(id)
-                .orElseThrow(() -> new ScheduleNotFoundException("해당 일정이 존재하지않습니다. id = " + id));
-        if(!schedule.getPassword().equals(passwordDto.getPassword())){
-            throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
-        }
+        Schedule schedule = checkPWAndGetSchedule(id, passwordDto.getPassword());
 
         // 일정과 연관된 파일 삭제
         fileRepository.deleteByScheduleId(id);
 
         scheduleRepository.delete(schedule);
+    }
+
+    private Schedule checkPWAndGetSchedule(Long id, String password){
+        Schedule schedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new ScheduleNotFoundException("해당 일정이 존재하지않습니다. id = " + id));
+        if(!schedule.getPassword().equals(password)){
+            throw new PasswordMismatchException("비밀번호가 일치하지 않습니다.");
+        }
+        return schedule;
     }
 }

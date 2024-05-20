@@ -4,20 +4,20 @@ import com.lys.schedulemanagement.dto.FileDownloadRequestDto;
 import com.lys.schedulemanagement.dto.FileUploadRequestDto;
 import com.lys.schedulemanagement.exception.ScheduleNotFoundException;
 import com.lys.schedulemanagement.service.FileService;
-import com.lys.schedulemanagement.service.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 
+@Tag(name = "File", description = "일정에 파일을 추가하는 API입니다.")
 @RestController
 @RequestMapping("/api/files")
 @RequiredArgsConstructor
