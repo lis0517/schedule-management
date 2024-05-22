@@ -17,5 +17,14 @@ entity "File" {
     file_path : String
 }
 
+entity "Comment"{
+    id : Long <<PK>>
+    schedule : "Schedule"" <<FK>>
+    content : String
+    author : String
+    created_at : Timestamp
+}
+
 Schedule ||--o{ File
+Schedule ||--o{ Comment
 @enduml
