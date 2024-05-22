@@ -12,7 +12,6 @@ import java.util.List;
 @Table(name = "comment")
 @Getter
 @Setter
-@NoArgsConstructor
 @RequiredArgsConstructor
 public class Comment {
 
@@ -20,14 +19,14 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "content",nullable = false)
     private String content;
 
-    @Column(nullable = false)
+    @Column(name = "author",nullable = false)
     private String author;
 
-    @Column(nullable = false)
-    private LocalDateTime createAt;
+    @Column(name = "created_at",nullable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "schedule_id", nullable = false)
