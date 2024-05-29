@@ -1,12 +1,12 @@
 package com.lys.schedulemanagement;
 
-import com.lys.schedulemanagement.dto.PasswordDto;
-import com.lys.schedulemanagement.dto.RequestDto;
-import com.lys.schedulemanagement.dto.ResponseDto;
-import com.lys.schedulemanagement.entity.Schedule;
-import com.lys.schedulemanagement.exception.ScheduleNotFoundException;
-import com.lys.schedulemanagement.repository.ScheduleRepository;
-import com.lys.schedulemanagement.service.ScheduleService;
+import com.lys.schedulemanagement.user.model.PasswordDto;
+import com.lys.schedulemanagement.schedule.model.RequestDto;
+import com.lys.schedulemanagement.schedule.model.ResponseDto;
+import com.lys.schedulemanagement.schedule.model.Schedule;
+import com.lys.schedulemanagement.schedule.exception.ScheduleNotFoundException;
+import com.lys.schedulemanagement.schedule.ScheduleRepository;
+import com.lys.schedulemanagement.schedule.ScheduleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;

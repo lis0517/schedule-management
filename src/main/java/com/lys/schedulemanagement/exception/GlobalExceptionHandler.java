@@ -1,5 +1,12 @@
 package com.lys.schedulemanagement.exception;
 
+import com.lys.schedulemanagement.comment.exception.CommentNotFoundException;
+import com.lys.schedulemanagement.file.exception.DownloadFileNotFoundException;
+import com.lys.schedulemanagement.file.exception.FileTypeMismatchException;
+import com.lys.schedulemanagement.schedule.exception.ScheduleAreadyDeletedException;
+import com.lys.schedulemanagement.schedule.exception.ScheduleNotFoundException;
+import com.lys.schedulemanagement.user.exception.PasswordMismatchException;
+import com.lys.schedulemanagement.user.exception.UnauthorizedExcpetion;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

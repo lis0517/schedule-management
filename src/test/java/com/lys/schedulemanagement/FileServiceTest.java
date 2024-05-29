@@ -1,13 +1,13 @@
 package com.lys.schedulemanagement;
 
-import com.lys.schedulemanagement.dto.FileDownloadRequestDto;
-import com.lys.schedulemanagement.dto.FileUploadRequestDto;
-import com.lys.schedulemanagement.entity.File;
-import com.lys.schedulemanagement.entity.Schedule;
-import com.lys.schedulemanagement.exception.ScheduleNotFoundException;
-import com.lys.schedulemanagement.repository.FileRepository;
-import com.lys.schedulemanagement.repository.ScheduleRepository;
-import com.lys.schedulemanagement.service.FileService;
+import com.lys.schedulemanagement.file.model.FileDownloadRequestDto;
+import com.lys.schedulemanagement.file.model.FileUploadRequestDto;
+import com.lys.schedulemanagement.file.model.File;
+import com.lys.schedulemanagement.schedule.model.Schedule;
+import com.lys.schedulemanagement.schedule.exception.ScheduleNotFoundException;
+import com.lys.schedulemanagement.file.FileRepository;
+import com.lys.schedulemanagement.schedule.ScheduleRepository;
+import com.lys.schedulemanagement.file.FileService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
