@@ -11,10 +11,7 @@ import com.lys.schedulemanagement.user.model.User;
 import com.lys.schedulemanagement.user.model.UserRoleEnum;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 public class UserService {
