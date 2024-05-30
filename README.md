@@ -4,7 +4,7 @@
 
 **ERD**
 
-![스크린샷 2024-05-16 172226](https://github.com/lis0517/schedule-management/assets/43354156/1098254d-5ec2-4e75-9ad9-fe5d517a5281)
+![스크린샷 2024-05-30 210554](https://github.com/lis0517/schedule-management/assets/43354156/a5169a17-781c-4e47-8c56-bfbcf15c6048)
 
 **API 문서**
 
