@@ -3,9 +3,11 @@ package com.lys.schedulemanagement.user.model;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequestDto {
     @NotBlank(message = "유저 이름은 공백이 될 수 없습니다.")

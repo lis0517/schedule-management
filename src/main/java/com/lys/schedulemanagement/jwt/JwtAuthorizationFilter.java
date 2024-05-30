@@ -1,6 +1,6 @@
 package com.lys.schedulemanagement.jwt;
 
-import com.lys.schedulemanagement.security.UserDetailsServiceImpl;
+import com.lys.schedulemanagement.user.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -19,8 +20,8 @@ import java.io.IOException;
 @Slf4j(topic="JWT 검증 및 인가")
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-    private UserDetailsServiceImpl userDetailsService;
-    private JwtTokenProvider jwtTokenProvider;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public JwtAuthorizationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsServiceImpl userDetailsService){
         this.jwtTokenProvider = jwtTokenProvider;
@@ -33,13 +34,25 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
-        String token = jwtTokenProvider.getTokenFromRequest(request);
-        if(token != null && jwtTokenProvider.validateToken(token)){
-            Claims info = jwtTokenProvider.getUserInfoFromToken(token);
-            try{
+        String tokenValue = jwtTokenProvider.getTokenFromRequest(request);
+        log.info(tokenValue);
+
+        if (StringUtils.hasText(tokenValue)) {
+            // JWT 토큰 substring
+            tokenValue = jwtTokenProvider.substringToken(tokenValue);
+            log.info(tokenValue);
+
+            if (!jwtTokenProvider.validateToken(tokenValue)) {
+                log.error("Token Error");
+                return;
+            }
+
+            Claims info = jwtTokenProvider.getUserInfoFromToken(tokenValue);
+
+            try {
                 setAuthentication(info.getSubject());
-            }catch (Exception e){
-                logger.error(e);
+            } catch (Exception e) {
+                log.error(e.getMessage());
                 return;
             }
         }

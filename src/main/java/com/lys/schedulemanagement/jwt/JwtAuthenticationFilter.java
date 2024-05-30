@@ -3,7 +3,8 @@ package com.lys.schedulemanagement.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lys.schedulemanagement.user.model.LoginRequestDto;
-import com.lys.schedulemanagement.security.UserDetailsImpl;
+import com.lys.schedulemanagement.user.model.UserRoleEnum;
+import com.lys.schedulemanagement.user.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import java.io.IOException;
 @Slf4j(topic="로그인 및 JWT 생성")
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -48,8 +49,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         log.info("로그인 성공 및 JWT 생성");
         String username = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
+        UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
 
-        String token = jwtTokenProvider.generatedToken(username);
+        String token = jwtTokenProvider.generateToken(username,role);
+        log.info(token);
         jwtTokenProvider.addJwtToCookie(token, response);
     }
 

@@ -1,4 +1,4 @@
-package com.lys.schedulemanagement.user.model;
+package com.lys.schedulemanagement.schedule.model;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

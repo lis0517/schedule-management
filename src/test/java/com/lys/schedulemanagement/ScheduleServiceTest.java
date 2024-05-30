@@ -1,6 +1,6 @@
 package com.lys.schedulemanagement;
 
-import com.lys.schedulemanagement.user.model.PasswordDto;
+import com.lys.schedulemanagement.schedule.model.PasswordDto;
 import com.lys.schedulemanagement.schedule.model.RequestDto;
 import com.lys.schedulemanagement.schedule.model.ResponseDto;
 import com.lys.schedulemanagement.schedule.model.Schedule;

@@ -1,11 +1,11 @@
 package com.lys.schedulemanagement.schedule;
 
 
-import com.lys.schedulemanagement.user.model.PasswordDto;
+import com.lys.schedulemanagement.schedule.model.PasswordDto;
 import com.lys.schedulemanagement.schedule.model.RequestDto;
 import com.lys.schedulemanagement.schedule.model.ResponseDto;
 import com.lys.schedulemanagement.schedule.model.Schedule;
-import com.lys.schedulemanagement.user.exception.PasswordMismatchException;
+import com.lys.schedulemanagement.schedule.exception.PasswordMismatchException;
 import com.lys.schedulemanagement.schedule.exception.ScheduleNotFoundException;
 import com.lys.schedulemanagement.file.FileRepository;
 import jakarta.transaction.Transactional;

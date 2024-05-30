@@ -29,13 +29,17 @@ public class User {
     private String nickname;
 
     @Column(nullable = false, length = 10)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private UserRoleEnum role;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @PrePersist
-    public void prePersist(){
+    public User(String username, String password, String nickname, UserRoleEnum role){
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.role = role;
         this.createdAt = LocalDateTime.now();
     }
 }

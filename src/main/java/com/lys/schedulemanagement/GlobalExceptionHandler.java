@@ -1,11 +1,13 @@
-package com.lys.schedulemanagement.exception;
+package com.lys.schedulemanagement;
 
 import com.lys.schedulemanagement.comment.exception.CommentNotFoundException;
 import com.lys.schedulemanagement.file.exception.DownloadFileNotFoundException;
 import com.lys.schedulemanagement.file.exception.FileTypeMismatchException;
 import com.lys.schedulemanagement.schedule.exception.ScheduleAreadyDeletedException;
 import com.lys.schedulemanagement.schedule.exception.ScheduleNotFoundException;
-import com.lys.schedulemanagement.user.exception.PasswordMismatchException;
+import com.lys.schedulemanagement.user.exception.AdminTokenMismatchException;
+import com.lys.schedulemanagement.user.exception.DuplicateUsernameException;
+import com.lys.schedulemanagement.schedule.exception.PasswordMismatchException;
 import com.lys.schedulemanagement.user.exception.UnauthorizedExcpetion;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,5 +62,15 @@ public class GlobalExceptionHandler {
         });
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMsg.toString());
+    }
+
+    @ExceptionHandler(DuplicateUsernameException.class)
+    public ResponseEntity<String> handleDuplicateUsernameException(DuplicateUsernameException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(AdminTokenMismatchException.class)
+    public ResponseEntity<String> handleAdminTokenMismatchException(AdminTokenMismatchException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 }

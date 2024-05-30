@@ -28,12 +28,12 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto createComment(CommentRequestDto requestDto) {
+    public CommentResponseDto createComment(CommentRequestDto requestDto, String author) {
 
         Schedule schedule = scheduleRepository.findById(requestDto.getScheduleId()).orElseThrow(
                 ()-> new ScheduleNotFoundException("해당 일정을 찾을 수 없습니다. id: " + requestDto.getScheduleId()));
 
-        Comment comment = requestDto.toEntity(schedule);
+        Comment comment = requestDto.toEntity(schedule, author);
         comment.setCreatedAt(LocalDateTime.now());
 
         Comment savedComment = commentRepository.save(comment);
@@ -42,9 +42,9 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto) {
+    public CommentResponseDto updateComment(Long commentId, CommentRequestDto requestDto, String author) {
 
-        Comment comment = checkAuthorAndGetComment(commentId, requestDto.getAuthor());
+        Comment comment = checkAuthorAndGetComment(commentId, author);
 
         comment.setContent(requestDto.getContent());
 
@@ -53,9 +53,9 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long commentId, CommentRequestDto requestDto) {
+    public void deleteComment(Long commentId, String author) {
 
-        Comment comment = checkAuthorAndGetComment(commentId, requestDto.getAuthor());
+        Comment comment = checkAuthorAndGetComment(commentId, author);
 
         commentRepository.delete(comment);
     }

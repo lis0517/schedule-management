@@ -1,4 +1,4 @@
-package com.lys.schedulemanagement.security;
+package com.lys.schedulemanagement.user.security;
 
 import com.lys.schedulemanagement.user.model.User;
 import com.lys.schedulemanagement.user.UserRepository;
@@ -20,6 +20,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Not found username: " + username));
-        return new UserDetailsImpl(user);
+
+        User noopUser = new User(
+                user.getId(),
+                user.getUsername(),
+                "{noop}" + user.getPassword(),
+                user.getNickname(),
+                user.getRole(),
+                user.getCreatedAt()
+        );
+
+        return new UserDetailsImpl(noopUser);
     }
 }

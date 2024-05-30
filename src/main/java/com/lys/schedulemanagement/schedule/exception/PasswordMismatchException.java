@@ -1,4 +1,4 @@
-package com.lys.schedulemanagement.user.exception;
+package com.lys.schedulemanagement.schedule.exception;
 
 public class PasswordMismatchException extends RuntimeException{
     public PasswordMismatchException(String message){
